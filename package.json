@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/jcalixte/vue-pwa-asset-generator#readme",
   "dependencies": {
+    "sharp": "^0.23.1",
     "yargs": "^14.2.0"
   }
 }
