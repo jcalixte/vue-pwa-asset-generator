@@ -11,7 +11,7 @@ npm install --global vue-pwa-asset-generator
 or
 
 ```
-yarn add --global vue-pwa-asset-generator
+yarn global add vue-pwa-asset-generator
 ```
 
 ## Getting started
