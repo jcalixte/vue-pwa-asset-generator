@@ -24,7 +24,9 @@ const outputFolder = path.normalize(options.output || "");
 const absoluteOutput = path.resolve(outputFolder);
 
 if (!fs.existsSync(absoluteOutput)) {
-  fs.mkdirSync(absoluteOutput);
+  fs.mkdirSync(absoluteOutput, {
+    recursive: true
+  });
 }
 
 const resize = (name, width, height = undefined, displaySize = true) => {
