@@ -81,7 +81,7 @@ generateFavicon();
 
 const json = JSON.stringify({ icons }, null, 2);
 
-fs.writeFile(`./${outputFolder}/manifest.json`, json, function(err) {
+fs.writeFile(`${outputFolder}/manifest.json`, json, function(err) {
   if (err) {
     return console.error("error generating manifest.json", err);
   }
