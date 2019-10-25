@@ -3,6 +3,7 @@ const yargs = require("yargs");
 const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
+const toIco = require("to-ico");
 
 const options = yargs
   .usage("Usage: -a <asset> -o <output>")
@@ -53,6 +54,17 @@ const resize = (name, width, height = undefined, displaySize = true) => {
   });
 };
 
+generateFavicon = () => {
+  const image = fs.readFileSync(options.asset);
+
+  toIco([image], {
+    sizes: [16, 24, 32, 48, 64],
+    resize: true
+  }).then(result => {
+    fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
+  });
+};
+
 resize("android-chrome", 192);
 resize("android-chrome", 512);
 resize("apple-touch-icon", 60);
@@ -65,12 +77,13 @@ resize("favicon", 16);
 resize("favicon", 32);
 resize("msapplication-icon", 144);
 resize("mstile", 150);
+generateFavicon();
 
 const json = JSON.stringify({ icons }, null, 2);
 
 fs.writeFile(`./${outputFolder}/manifest.json`, json, function(err) {
   if (err) {
-    return console.error(err);
+    return console.error("error generating manifest.json", err);
   }
   console.log("Manifest file is created!");
 });

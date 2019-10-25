@@ -1,6 +1,6 @@
 {
   "name": "vue-pwa-asset-generator",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "VueJS asset generator for PWA",
   "main": "bin/index.js",
   "bin": {
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/jcalixte/vue-pwa-asset-generator#readme",
   "dependencies": {
     "sharp": "^0.23.1",
+    "to-ico": "^1.1.5",
     "yargs": "^14.2.0"
   }
 }
