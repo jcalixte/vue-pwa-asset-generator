@@ -4,6 +4,7 @@ const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
 const toIco = require("to-ico");
+const chalk = require("chalk");
 
 const options = yargs
   .usage("Usage: -a <asset> -o <output>")
@@ -16,8 +17,8 @@ const options = yargs
   .option("o", { alias: "output", describe: "folder output", type: "string" })
   .argv;
 
-const information = `Generating images for ${options.asset}!`;
-console.log(information);
+const information = `Generating images for ${options.asset}...`;
+console.log(chalk.blue(information));
 
 const icons = [];
 
@@ -36,33 +37,40 @@ const resize = (name, width, height = undefined, displaySize = true) => {
   }
 
   const size = displaySize ? `-${width}x${height}` : "";
+  const filename = `${name}${size}.png`;
 
   sharp(options.asset)
     .resize(width, height, {
       background: "transparent",
       fit: "contain"
     })
-    .toFile(`${absoluteOutput}/${name}${size}.png`, function(err) {
+    .toFile(`${absoluteOutput}/${filename}`, function(err) {
       if (err) {
-        console.error(err);
+        console.error(chalk.red(err));
+      } else {
+        console.log(chalk.green(`${filename} created!`));
       }
     });
   icons.push({
-    src: `./img/icons/${name}${size}.png`,
+    src: `./img/icons/${filename}`,
     sizes: `${width}x${height}`,
     type: "image/png"
   });
 };
 
 generateFavicon = () => {
-  const image = fs.readFileSync(options.asset);
+  try {
+    const image = fs.readFileSync(options.asset);
 
-  toIco([image], {
-    sizes: [16, 24, 32, 48, 64],
-    resize: true
-  }).then(result => {
-    fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
-  });
+    toIco([image], {
+      sizes: [16, 24, 32, 48, 64],
+      resize: true
+    }).then(result => {
+      fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
+    });
+  } catch (error) {
+    console.error(chalk.red(error));
+  }
 };
 
 resize("android-chrome", 192);
@@ -83,7 +91,7 @@ const json = JSON.stringify({ icons }, null, 2);
 
 fs.writeFile(`${outputFolder}/manifest.json`, json, function(err) {
   if (err) {
-    return console.error("error generating manifest.json", err);
+    return console.error(chalk.red("error generating manifest.json", err));
   }
-  console.log("Manifest file is created!");
+  console.log(chalk.underline(chalk.green("Manifest file is created!")));
 });
