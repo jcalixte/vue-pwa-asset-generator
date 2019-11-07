@@ -14,12 +14,12 @@ or
 yarn global add vue-pwa-asset-generator
 ```
 
-## Getting started
+## Usage
 
-Vue PWA asset generator has a `vue-asset-generate` command with two parameters :
+VueJS PWA asset generator has a `vue-asset-generate` command with two parameters :
 
-- -a is your input asset in PNG, better be a 512x512 image.
-- -o output folder (created if it does not exist)
+- `-a` is your input asset in PNG (FYI, the largest image is a 512x512 png image).
+- `-o` output folder (created if it does not exist).
 
 ## Example
 
