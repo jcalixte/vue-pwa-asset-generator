@@ -46,7 +46,7 @@ const resize = (name, width, height = undefined, displaySize = true) => {
     })
     .toFile(`${absoluteOutput}/${filename}`, function(err) {
       if (err) {
-        console.error(chalk.red(err));
+        console.error(chalk.red(`error generating ${filename}`, err));
       } else {
         console.log(chalk.green(`${filename} created!`));
       }
@@ -69,7 +69,7 @@ generateFavicon = () => {
       fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
     });
   } catch (error) {
-    console.error(chalk.red(error));
+    console.error(chalk.red("error generating favicon", error));
   }
 };
 
@@ -91,7 +91,8 @@ const json = JSON.stringify({ icons }, null, 2);
 
 fs.writeFile(`${outputFolder}/manifest.json`, json, function(err) {
   if (err) {
-    return console.error(chalk.red("error generating manifest.json", err));
+    console.error(chalk.red("error generating manifest.json", err));
+    return;
   }
-  console.log(chalk.underline(chalk.green("Manifest file is created!")));
+  console.log(chalk.underline(chalk.green("Manifest file created!")));
 });
