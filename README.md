@@ -1,5 +1,8 @@
 # Vue PWA asset generator
 
+![npm](https://img.shields.io/npm/v/vue-pwa-asset-generator?style=for-the-badge)
+![npm](https://img.shields.io/npm/dm/vue-pwa-asset-generator?style=for-the-badge)
+
 _TLDR_ :
 
 ```
