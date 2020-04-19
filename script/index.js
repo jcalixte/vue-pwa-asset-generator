@@ -12,7 +12,7 @@ const options = yargs
     alias: "asset",
     describe: "A PNG file",
     type: "string",
-    demandOption: true
+    demandOption: true,
   })
   .option("o", { alias: "output", describe: "folder output", type: "string" })
   .argv;
@@ -27,7 +27,7 @@ const absoluteOutput = path.resolve(outputFolder);
 
 if (!fs.existsSync(absoluteOutput)) {
   fs.mkdirSync(absoluteOutput, {
-    recursive: true
+    recursive: true,
   });
 }
 
@@ -42,9 +42,9 @@ const resize = (name, width, height = undefined, displaySize = true) => {
   sharp(options.asset)
     .resize(width, height, {
       background: "transparent",
-      fit: "contain"
+      fit: "contain",
     })
-    .toFile(`${absoluteOutput}/${filename}`, function(err) {
+    .toFile(`${absoluteOutput}/${filename}`, function (err) {
       if (err) {
         console.error(chalk.red(`error generating ${filename}`, err));
       } else {
@@ -54,7 +54,7 @@ const resize = (name, width, height = undefined, displaySize = true) => {
   icons.push({
     src: `./img/icons/${filename}`,
     sizes: `${width}x${height}`,
-    type: "image/png"
+    type: "image/png",
   });
 };
 
@@ -64,10 +64,14 @@ generateFavicon = () => {
 
     toIco([image], {
       sizes: [16, 24, 32, 48, 64],
-      resize: true
-    }).then(result => {
-      fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
-    });
+      resize: true,
+    })
+      .then((result) => {
+        fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
+      })
+      .catch((error) => {
+        console.error(chalk.red("error generating favicon", error));
+      });
   } catch (error) {
     console.error(chalk.red("error generating favicon", error));
   }
@@ -89,7 +93,7 @@ generateFavicon();
 
 const json = JSON.stringify({ icons }, null, 2);
 
-fs.writeFile(`${outputFolder}/manifest.json`, json, function(err) {
+fs.writeFile(`${outputFolder}/manifest.json`, json, function (err) {
   if (err) {
     console.error(chalk.red("error generating manifest.json", err));
     return;
