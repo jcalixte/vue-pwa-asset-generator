@@ -1,10 +1,10 @@
 {
   "name": "vue-pwa-asset-generator",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "VueJS asset generator for PWA",
-  "main": "bin/index.js",
+  "main": "script/index.js",
   "bin": {
-    "vue-asset-generate": "./bin/index.js"
+    "vue-asset-generate": "./script/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/jcalixte/vue-pwa-asset-generator#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
-    "sharp": "^0.23.1",
+    "chalk": "^4.0.0",
+    "sharp": "^0.25.2",
     "to-ico": "^1.1.5",
-    "yargs": "^14.2.0"
+    "yargs": "^15.3.1"
   }
 }
