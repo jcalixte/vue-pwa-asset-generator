@@ -11,6 +11,8 @@ npx vue-pwa-asset-generator -a {your_512x512_source_png} -o {your_output_folder}
 
 This package creates for you all the default assets used in a VueJS app with PWA plugin as well as a manifest JSON with the `icons` attribute set.
 
+![demo](docs/demo.gif)
+
 ## install
 
 You can use npx as shown above or you can install it globally:
