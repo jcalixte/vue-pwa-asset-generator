@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const toIco = require("to-ico");
 const chalk = require("chalk");
+const potrace = require("potrace");
 
 const options = yargs
   .usage("Usage: -a <asset> -o <output>")
@@ -31,6 +32,14 @@ if (!fs.existsSync(absoluteOutput)) {
   });
 }
 
+const logSuccess = (filename) => {
+  console.log(chalk.green(`${filename} created!`));
+};
+
+const logError = (filename, err) => {
+  console.error(chalk.red(`error generating ${filename}`, err));
+};
+
 const resize = (name, width, height = undefined, displaySize = true) => {
   if (!height) {
     height = width;
@@ -46,39 +55,64 @@ const resize = (name, width, height = undefined, displaySize = true) => {
     })
     .toFile(`${absoluteOutput}/${filename}`, function (err) {
       if (err) {
-        console.error(chalk.red(`error generating ${filename}`, err));
+        logError(filename, err);
       } else {
-        console.log(chalk.green(`${filename} created!`));
+        logSuccess(filename);
       }
     });
-  icons.push({
+
+  const icon = {
     src: `./img/icons/${filename}`,
     sizes: `${width}x${height}`,
     type: "image/png",
-  });
+  };
+
+  if (name.includes("maskable")) {
+    icon.purpose = "maskable";
+  }
+
+  icons.push(icon);
 };
 
-generateFavicon = () => {
+const generateFavicon = () => {
   try {
     const image = fs.readFileSync(options.asset);
+    const filename = "favicon.ico";
 
     toIco([image], {
       sizes: [16, 24, 32, 48, 64],
       resize: true,
     })
       .then((result) => {
-        fs.writeFileSync(`${absoluteOutput}/favicon.ico`, result);
+        fs.writeFileSync(`${absoluteOutput}/${filename}`, result);
+        logSuccess(filename);
       })
-      .catch((error) => {
-        console.error(chalk.red("error generating favicon", error));
+      .catch((err) => {
+        logError(filename, err);
       });
-  } catch (error) {
-    console.error(chalk.red("error generating favicon", error));
+  } catch (err) {
+    logError(filename, err);
   }
 };
 
+const generateSvg = () => {
+  const filename = "safari-pinned-tab.svg";
+  potrace.trace(options.asset, (err, svg) => {
+    if (err) {
+      console.error(chalk.red("error generating svg icon", err));
+      return;
+    }
+    fs.writeFileSync(`${absoluteOutput}/${filename}`, svg);
+    logSuccess(filename);
+  });
+};
+
+generateSvg();
+generateFavicon();
 resize("android-chrome", 192);
 resize("android-chrome", 512);
+resize("android-chrome-maskable", 192);
+resize("android-chrome-maskable", 512);
 resize("apple-touch-icon", 60);
 resize("apple-touch-icon", 76);
 resize("apple-touch-icon", 120);
@@ -89,14 +123,14 @@ resize("favicon", 16);
 resize("favicon", 32);
 resize("msapplication-icon", 144);
 resize("mstile", 150);
-generateFavicon();
 
 const json = JSON.stringify({ icons }, null, 2);
 
 fs.writeFile(`${outputFolder}/manifest.json`, json, function (err) {
+  const filename = "manifest.json";
   if (err) {
-    console.error(chalk.red("error generating manifest.json", err));
-    return;
+    logError(filename, err);
+  } else {
+    logSuccess(filename);
   }
-  console.log(chalk.underline(chalk.green("Manifest file created!")));
 });
