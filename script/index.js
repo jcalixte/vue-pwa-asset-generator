@@ -51,11 +51,18 @@ const resize = (name, width, height = undefined, displaySize = true) => {
         console.log(chalk.green(`${filename} created!`));
       }
     });
-  icons.push({
+
+  const icon = {
     src: `./img/icons/${filename}`,
     sizes: `${width}x${height}`,
     type: "image/png",
-  });
+  };
+
+  if (name.includes("maskable")) {
+    icon.purpose = "maskable";
+  }
+
+  icons.push(icon);
 };
 
 generateFavicon = () => {
@@ -79,6 +86,8 @@ generateFavicon = () => {
 
 resize("android-chrome", 192);
 resize("android-chrome", 512);
+resize("android-chrome-maskable", 192);
+resize("android-chrome-maskable", 512);
 resize("apple-touch-icon", 60);
 resize("apple-touch-icon", 76);
 resize("apple-touch-icon", 120);
