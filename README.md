@@ -13,7 +13,7 @@ This package creates for you all the default assets used in a VueJS app with PWA
 
 ![demo](docs/demo.gif)
 
-## install
+## Installation
 
 You can use npx as shown above or you can install it globally:
 
@@ -118,3 +118,7 @@ module.exports = {
   },
 };
 ```
+
+## ⚠️
+
+The generator creates a **black and white** svg from the asset for the `safari-pinned-tab.svg` icon, some manual modifications may be necessary.
