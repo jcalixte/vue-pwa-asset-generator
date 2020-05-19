@@ -7,7 +7,7 @@
     "vue-asset-generate": "./script/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,8 @@
     "sharp": "^0.25.2",
     "to-ico": "^1.1.5",
     "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "release-it": "^13.6.1"
   }
 }
