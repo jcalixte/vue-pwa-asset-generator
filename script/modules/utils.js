@@ -3,6 +3,14 @@ const path = require("path");
 const chalk = require("chalk");
 
 /**
+ * Log a information.
+ * @param {string} filename file name
+ */
+const logInfo = (filename) => {
+  console.log(chalk.blue(`${filename} created!`));
+};
+
+/**
  * Log a successful message.
  * @param {string} filename file name
  */
@@ -37,6 +45,7 @@ const createOutputFolder = (outputFolder) => {
 };
 
 module.exports = {
+  logInfo,
   logSuccess,
   logError,
   createOutputFolder,

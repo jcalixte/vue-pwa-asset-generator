@@ -1,5 +1,8 @@
 const sharp = require("sharp");
 const { logSuccess, logError } = require("./utils");
+const { isSvgAsset } = require("./svg");
+
+const MASKABLE = "maskable";
 
 /**
  * Generate a PNG file with a specific dimension
@@ -11,7 +14,7 @@ const { logSuccess, logError } = require("./utils");
  * @param {boolean} displaySize display size in the name
  * @return {object} the json item to put on the manifest file
  */
-const resize = (
+const resize = async (
   asset,
   pathOutput,
   name,
@@ -26,18 +29,19 @@ const resize = (
   const size = displaySize ? `-${width}x${height}` : "";
   const filename = `${name}${size}.png`;
 
-  sharp(asset)
-    .resize(width, height, {
-      background: "transparent",
-      fit: "contain",
-    })
-    .toFile(`${pathOutput}/${filename}`, function (err) {
-      if (err) {
-        logError(filename, err);
-      } else {
-        logSuccess(filename);
-      }
-    });
+  const sharped = isSvgAsset(asset) ? sharp(asset).png() : sharp(asset);
+
+  try {
+    await sharped
+      .resize(width, height, {
+        background: "transparent",
+        fit: "contain",
+      })
+      .toFile(`${pathOutput}/${filename}`);
+    logSuccess(filename);
+  } catch (error) {
+    logError(filename, error);
+  }
 
   const icon = {
     src: `./img/icons/${filename}`,
@@ -45,8 +49,8 @@ const resize = (
     type: "image/png",
   };
 
-  if (name.includes("maskable")) {
-    icon.purpose = "maskable";
+  if (name.includes(MASKABLE)) {
+    icon.purpose = MASKABLE;
   }
 
   return icon;
