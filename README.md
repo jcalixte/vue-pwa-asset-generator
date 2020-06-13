@@ -34,9 +34,10 @@ VueJS PWA asset generator has a `vue-asset-generate` command with two parameters
 - `-a` is your input asset can be an SVG file or a PNG file (FYI, the largest image is a 512x512 png image).
 - `-o` output folder (created if it does not exist).
 
-## Example
+## Examples
 
 `vue-asset-generate -a logo.png -o img`
+
 `vue-asset-generate -a logo.svg -o img`
 
 ## I'm using the plugin for pwa where do I put my manifest json?
