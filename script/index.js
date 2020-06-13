@@ -1,17 +1,22 @@
 #!/usr/bin/env node
 const yargs = require("yargs");
-const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
-const toIco = require("to-ico");
-const chalk = require("chalk");
-const potrace = require("potrace");
+const {
+  createOutputFolder,
+  logInfo,
+  logSuccess,
+  logError,
+} = require("./modules/utils");
+const { resize } = require("./modules/png");
+const { generateFavicon } = require("./modules/favicon");
+const { generateSvg } = require("./modules/svg");
 
 const options = yargs
   .usage("Usage: -a <asset> -o <output>")
   .option("a", {
     alias: "asset",
-    describe: "A PNG file",
+    describe: "A PNG or SVG file",
     type: "string",
     demandOption: true,
   })
@@ -19,118 +24,43 @@ const options = yargs
   .argv;
 
 const information = `Generating images for ${options.asset}...`;
-console.log(chalk.blue(information));
+logInfo(information);
 
-const icons = [];
+const outputPath = createOutputFolder(path.normalize(options.output || ""));
+let assetPath = path.resolve(options.asset);
 
-const outputFolder = path.normalize(options.output || "");
-const absoluteOutput = path.resolve(outputFolder);
+generateSvg(assetPath, outputPath);
 
-if (!fs.existsSync(absoluteOutput)) {
-  fs.mkdirSync(absoluteOutput, {
-    recursive: true,
-  });
-}
+const generateIcons = async () => {
+  const icons = await Promise.all([
+    resize(assetPath, outputPath, "android-chrome", 192),
+    resize(assetPath, outputPath, "android-chrome", 512),
+    resize(assetPath, outputPath, "android-chrome-maskable", 192),
+    resize(assetPath, outputPath, "android-chrome-maskable", 512),
+    resize(assetPath, outputPath, "apple-touch-icon", 60),
+    resize(assetPath, outputPath, "apple-touch-icon", 76),
+    resize(assetPath, outputPath, "apple-touch-icon", 120),
+    resize(assetPath, outputPath, "apple-touch-icon", 152),
+    resize(assetPath, outputPath, "apple-touch-icon", 180),
+    resize(assetPath, outputPath, "apple-touch-icon", 180, 180, false),
+    resize(assetPath, outputPath, "favicon", 16),
+    resize(assetPath, outputPath, "favicon", 32),
+    resize(assetPath, outputPath, "msapplication-icon", 144),
+    resize(assetPath, outputPath, "mstile", 150),
+  ]);
+  const asset512x512Path = `${outputPath}/android-chrome-512x512.png`;
+  await generateFavicon(asset512x512Path, outputPath);
 
-const logSuccess = (filename) => {
-  console.log(chalk.green(`${filename} created!`));
-};
+  const json = JSON.stringify({ icons }, null, 2);
+  const manifestFilename = "manifest.json";
 
-const logError = (filename, err) => {
-  console.error(chalk.red(`error generating ${filename}`, err));
-};
-
-const resize = (name, width, height = undefined, displaySize = true) => {
-  if (!height) {
-    height = width;
-  }
-
-  const size = displaySize ? `-${width}x${height}` : "";
-  const filename = `${name}${size}.png`;
-
-  sharp(options.asset)
-    .resize(width, height, {
-      background: "transparent",
-      fit: "contain",
-    })
-    .toFile(`${absoluteOutput}/${filename}`, function (err) {
-      if (err) {
-        logError(filename, err);
-      } else {
-        logSuccess(filename);
-      }
-    });
-
-  const icon = {
-    src: `./img/icons/${filename}`,
-    sizes: `${width}x${height}`,
-    type: "image/png",
-  };
-
-  if (name.includes("maskable")) {
-    icon.purpose = "maskable";
-  }
-
-  icons.push(icon);
-};
-
-const generateFavicon = () => {
-  try {
-    const image = fs.readFileSync(options.asset);
-    const filename = "favicon.ico";
-
-    toIco([image], {
-      sizes: [16, 24, 32, 48, 64],
-      resize: true,
-    })
-      .then((result) => {
-        fs.writeFileSync(`${absoluteOutput}/${filename}`, result);
-        logSuccess(filename);
-      })
-      .catch((err) => {
-        logError(filename, err);
-      });
-  } catch (err) {
-    logError(filename, err);
-  }
-};
-
-const generateSvg = () => {
-  const filename = "safari-pinned-tab.svg";
-  potrace.trace(options.asset, (err, svg) => {
+  fs.writeFile(`${outputPath}/manifest.json`, json, function (err) {
     if (err) {
-      console.error(chalk.red("error generating svg icon", err));
-      return;
+      logError(manifestFilename, err);
+    } else {
+      logSuccess(manifestFilename);
     }
-    fs.writeFileSync(`${absoluteOutput}/${filename}`, svg);
-    logSuccess(filename);
   });
 };
 
-generateSvg();
-generateFavicon();
-resize("android-chrome", 192);
-resize("android-chrome", 512);
-resize("android-chrome-maskable", 192);
-resize("android-chrome-maskable", 512);
-resize("apple-touch-icon", 60);
-resize("apple-touch-icon", 76);
-resize("apple-touch-icon", 120);
-resize("apple-touch-icon", 152);
-resize("apple-touch-icon", 180);
-resize("apple-touch-icon", 180, 180, false);
-resize("favicon", 16);
-resize("favicon", 32);
-resize("msapplication-icon", 144);
-resize("mstile", 150);
-
-const json = JSON.stringify({ icons }, null, 2);
-
-fs.writeFile(`${outputFolder}/manifest.json`, json, function (err) {
-  const filename = "manifest.json";
-  if (err) {
-    logError(filename, err);
-  } else {
-    logSuccess(filename);
-  }
-});
+generateIcons();

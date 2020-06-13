@@ -6,7 +6,7 @@
 _TLDR_ :
 
 ```
-npx vue-pwa-asset-generator -a {your_512x512_source_png} -o {your_output_folder}
+npx vue-pwa-asset-generator -a {your_512x512_png_source | your_svg_source} -o {your_output_folder}
 ```
 
 This package creates for you all the default assets used in a VueJS app with PWA plugin as well as a manifest JSON with the `icons` attribute set.
@@ -31,12 +31,13 @@ yarn global add vue-pwa-asset-generator
 
 VueJS PWA asset generator has a `vue-asset-generate` command with two parameters :
 
-- `-a` is your input asset in PNG (FYI, the largest image is a 512x512 png image).
+- `-a` is your input asset can be an SVG file or a PNG file (FYI, the largest image is a 512x512 png image).
 - `-o` output folder (created if it does not exist).
 
 ## Example
 
 `vue-asset-generate -a logo.png -o img`
+`vue-asset-generate -a logo.svg -o img`
 
 ## I'm using the plugin for pwa where do I put my manifest json?
 
@@ -62,6 +63,18 @@ module.exports = {
           src: "./img/icons/android-chrome-512x512.png",
           sizes: "512x512",
           type: "image/png",
+        },
+        {
+          src: "./img/icons/android-chrome-maskable-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "maskable",
+        },
+        {
+          src: "./img/icons/android-chrome-maskable-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
         },
         {
           src: "./img/icons/apple-touch-icon-60x60.png",
@@ -121,4 +134,4 @@ module.exports = {
 
 ## ⚠️
 
-The generator creates a **black and white** svg from the asset for the `safari-pinned-tab.svg` icon, some manual modifications may be necessary.
+The generator creates a **black and white** svg from the png file for the `safari-pinned-tab.svg` icon, some manual modifications may be necessary.
