@@ -6,7 +6,7 @@
 _TLDR_ :
 
 ```
-npx vue-pwa-asset-generator -a {your_512x512_png_source | your_svg_source} -o {your_output_folder}
+npx vue-pwa-asset-generator -a {512x512_png_source | svg_source} -o {output_folder}
 ```
 
 This package creates for you all the default assets used in a VueJS app with PWA plugin as well as a manifest JSON with the `icons` attribute set.
@@ -31,7 +31,7 @@ yarn global add vue-pwa-asset-generator
 
 VueJS PWA asset generator has a `vue-asset-generate` command with two parameters :
 
-- `-a` is your input asset can be an SVG file or a PNG file (FYI, the largest image is a 512x512 png image).
+- `-a` is your input asset can be an SVG file or a PNG file (the largest image is a 512x512 png image).
 - `-o` output folder (created if it does not exist).
 
 ## Examples
@@ -40,11 +40,11 @@ VueJS PWA asset generator has a `vue-asset-generate` command with two parameters
 
 `vue-asset-generate -a logo.svg -o img`
 
-## I'm using the plugin for pwa where do I put my manifest json?
+## "Hey, I'm using the Vue plugin for pwa. Where do I put my manifest json?"
 
-You can configurate your pwa from the `vue.config.js` file.
+You can configure your PWA with the `vue.config.js` file.
 
-Here an example how you can merge the `manifest.json` created and your config file:
+Here an example of how you can merge the created `manifest.json` and your configuration file:
 
 ```js
 module.exports = {
@@ -135,4 +135,6 @@ module.exports = {
 
 ## ⚠️
 
-The generator creates a **black and white** svg from the png file for the `safari-pinned-tab.svg` icon, some manual modifications may be necessary.
+When generating assets from a png file, the generator creates a **black and white** svg for the `safari-pinned-tab.svg` icon, some manual modifications may be necessary.
+
+I hope this will be useful as it is for me! ♥
