@@ -31,23 +31,27 @@ let assetPath = path.resolve(options.asset);
 
 generateSvg(assetPath, outputPath);
 
+const iconParams = [
+  ["android-chrome", 192],
+  ["android-chrome", 512],
+  ["android-chrome-maskable", 192],
+  ["android-chrome-maskable", 512],
+  ["apple-touch-icon", 60],
+  ["apple-touch-icon", 76],
+  ["apple-touch-icon", 120],
+  ["apple-touch-icon", 152],
+  ["apple-touch-icon", 180],
+  ["apple-touch-icon", 180, false],
+  ["favicon", 16],
+  ["favicon", 32],
+  ["msapplication-icon", 144],
+  ["mstile", 150],
+];
+
 const generateIcons = async () => {
-  const icons = await Promise.all([
-    resize(assetPath, outputPath, "android-chrome", 192),
-    resize(assetPath, outputPath, "android-chrome", 512),
-    resize(assetPath, outputPath, "android-chrome-maskable", 192),
-    resize(assetPath, outputPath, "android-chrome-maskable", 512),
-    resize(assetPath, outputPath, "apple-touch-icon", 60),
-    resize(assetPath, outputPath, "apple-touch-icon", 76),
-    resize(assetPath, outputPath, "apple-touch-icon", 120),
-    resize(assetPath, outputPath, "apple-touch-icon", 152),
-    resize(assetPath, outputPath, "apple-touch-icon", 180),
-    resize(assetPath, outputPath, "apple-touch-icon", 180, 180, false),
-    resize(assetPath, outputPath, "favicon", 16),
-    resize(assetPath, outputPath, "favicon", 32),
-    resize(assetPath, outputPath, "msapplication-icon", 144),
-    resize(assetPath, outputPath, "mstile", 150),
-  ]);
+  const icons = await Promise.all(
+    iconParams.map((iconParam) => resize(assetPath, outputPath, ...iconParam))
+  );
   const asset512x512Path = `${outputPath}/android-chrome-512x512.png`;
   await generateFavicon(asset512x512Path, outputPath);
 
