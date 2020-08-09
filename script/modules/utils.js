@@ -28,6 +28,14 @@ const logError = (filename, err) => {
 };
 
 /**
+ * Log a fatal error message.
+ * @param {string} err error thrown
+ */
+const logFatal = (err) => {
+  console.error(chalk.red(err));
+};
+
+/**
  * Create the output folder event if it is a nested folder
  * @param {string} outputFolder path to the output folder
  * @returns {string} absolute path to the output folder
@@ -48,5 +56,6 @@ module.exports = {
   logInfo,
   logSuccess,
   logError,
+  logFatal,
   createOutputFolder,
 };
