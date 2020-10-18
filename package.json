@@ -19,7 +19,7 @@
     "generator"
   ],
   "author": "Julien Calixte",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jcalixte/vue-pwa-asset-generator/issues"
   },
