@@ -23,7 +23,13 @@ const main = () => {
       demandOption: true,
     })
     .option("o", { alias: "output", describe: "folder output", type: "string" })
-    .argv;
+    .option("manifest", {
+      describe: "generate manifest.json file",
+      type: "boolean",
+      default: true,
+    }).argv;
+
+  const withManifest = options.manifest;
 
   if (!fs.existsSync(options.asset)) {
     logFatal(
@@ -67,13 +73,15 @@ const main = () => {
     const json = JSON.stringify({ icons }, null, 2);
     const manifestFilename = "manifest.json";
 
-    fs.writeFile(`${outputPath}/manifest.json`, json, function (err) {
-      if (err) {
-        logError(manifestFilename, err);
-      } else {
-        logSuccess(manifestFilename);
-      }
-    });
+    if (withManifest) {
+      fs.writeFile(`${outputPath}/manifest.json`, json, function (err) {
+        if (err) {
+          logError(manifestFilename, err);
+        } else {
+          logSuccess(manifestFilename);
+        }
+      });
+    }
   };
 
   generateIcons();
