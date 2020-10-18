@@ -31,8 +31,9 @@ yarn global add vue-pwa-asset-generator
 
 VueJS PWA asset generator has a `vue-asset-generate` command with two parameters :
 
-- `-a` is your input asset can be an SVG file or a PNG file (the largest image is a 512x512 png image).
-- `-o` output folder (created if it does not exist).
+- `-a`: input asset, it can be an SVG file or a PNG file (the largest image is a 512x512 png image).
+- `-o`: output folder (created if it doesn't exist).
+- `--no-manifest`: option to not generate manifest.json file
 
 ## Examples
 
