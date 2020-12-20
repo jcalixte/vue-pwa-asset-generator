@@ -22,7 +22,7 @@ const main = () => {
       type: "string",
       demandOption: true,
     })
-    .option("o", { alias: "output", describe: "folder output", type: "string" })
+    .option("o", { alias: "output", describe: "folder output", type: "string", default: false })
     .option("manifest", {
       describe: "generate manifest.json file",
       type: "boolean",
@@ -30,6 +30,10 @@ const main = () => {
     }).argv;
 
   const withManifest = options.manifest;
+  
+  const publicFolderPath = createOutputFolder(path.normalize(options.output || "public" || ""));
+  const iconFolderPath = createOutputFolder(path.normalize(options.output || "public/img/icons" || ""));
+
 
   if (!fs.existsSync(options.asset)) {
     logFatal(
@@ -41,10 +45,9 @@ const main = () => {
   const information = `Generating images for ${options.asset}...`;
   logInfo(information);
 
-  const outputPath = createOutputFolder(path.normalize(options.output || ""));
-  let assetPath = path.resolve(options.asset);
+  const assetPath = path.resolve(options.asset);
 
-  generateSvg(assetPath, outputPath);
+  generateSvg(assetPath, iconFolderPath);
 
   const iconParams = [
     ["android-chrome", 192],
@@ -65,16 +68,16 @@ const main = () => {
 
   const generateIcons = async () => {
     const icons = await Promise.all(
-      iconParams.map((iconParam) => resize(assetPath, outputPath, ...iconParam))
+      iconParams.map((iconParam) => resize(assetPath, iconFolderPath, ...iconParam))
     );
-    const asset512x512Path = `${outputPath}/android-chrome-512x512.png`;
-    await generateFavicon(asset512x512Path, outputPath);
+    const asset512x512Path = `${iconFolderPath}/android-chrome-512x512.png`;
+    await generateFavicon(asset512x512Path, publicFolderPath);
 
     const json = JSON.stringify({ icons }, null, 2);
     const manifestFilename = "manifest.json";
 
     if (withManifest) {
-      fs.writeFile(`${outputPath}/manifest.json`, json, function (err) {
+      fs.writeFile(`${publicFolderPath}/manifest.json`, json, function (err) {
         if (err) {
           logError(manifestFilename, err);
         } else {
