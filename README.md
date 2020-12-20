@@ -32,7 +32,7 @@ yarn global add vue-pwa-asset-generator
 VueJS PWA asset generator has a `vue-asset-generate` command with two parameters :
 
 - `-a` is your input asset can be an SVG file or a PNG file (the largest image is a 512x512 png image).
-- `-o` output folder (created if it does not exist). This parameter is optional, by default, `vue-pwa-asset-generator` will assume the command is runned in a VueJS project. Therefor the `manifest.json` and `favicon.ico` are in `public` folder, the rest ies in `public/img/icons` folder.
+- `-o` output folder (created if it does not exist). This parameter is optional, by default, `vue-pwa-asset-generator` will assume the command is run in a VueJS project. Therefor the `manifest.json` and `favicon.ico` are in `public` folder, the rest ies in `public/img/icons` folder.
 
 ## Examples
 
