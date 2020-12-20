@@ -1,6 +1,6 @@
 {
   "name": "vue-pwa-asset-generator",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "VueJS asset generator for PWA",
   "main": "script/index.js",
   "bin": {
