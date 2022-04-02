@@ -15,13 +15,12 @@ const generateFavicon = async (assetPath, pathOutput, background) => {
   let inputPath = assetPath;
 
   if (background) {
+    inputPath = `${pathOutput}/${assetInputFilename}`;
     const assetInput = sharp(assetPath).flatten({
       background,
     });
 
     await assetInput.toFile(inputPath);
-
-    inputPath = `${pathOutput}/${assetInputFilename}`;
   }
 
   try {
