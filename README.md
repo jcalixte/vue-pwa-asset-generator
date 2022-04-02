@@ -5,8 +5,8 @@
 
 _TLDR_ :
 
-```
-npx vue-pwa-asset-generator -a {512x512_png_source | svg_source} [-o {output_folder}]
+```sh
+npx vue-pwa-asset-generator -a {512x512_png_source | svg_source} [-o {output_folder} [-b {fallback background color}]]
 ```
 
 This package creates for you all the default assets used in a VueJS app with PWA plugin as well as a manifest JSON with the `icons` attribute set.
@@ -17,14 +17,20 @@ This package creates for you all the default assets used in a VueJS app with PWA
 
 You can use npx as shown above or you can install it globally:
 
-```
+```sh
 npm install --global vue-pwa-asset-generator
 ```
 
 or
 
-```
+```sh
 yarn global add vue-pwa-asset-generator
+```
+
+or
+
+```sh
+pnpm global add vue-pwa-asset-generator
 ```
 
 ## Usage
@@ -33,15 +39,16 @@ VueJS PWA asset generator has a `vue-asset-generate` command with two parameters
 
 - `-a`: input asset, it can be an SVG file or a PNG file (the largest image is a 512x512 png image).
 - `-o` output folder (created if it does not exist). This parameter is optional, by default, `vue-pwa-asset-generator` will assume the command is run in a VueJS project. Therefor the `manifest.json` and `favicon.ico` are in `public` folder, the rest ies in `public/img/icons` folder.
+- `-b`, fallback background color for the `ico` image.
 - `--no-manifest`: option to not generate manifest.json file
 
 ## Examples
 
-`vue-asset-generate -a logo.png -o img`
-
-`vue-asset-generate -a logo.svg`
-
-`vue-asset-generate -a logo.svg -o img`
+- `vue-asset-generate -a logo.png -o img`
+- `vue-asset-generate -a logo.svg`
+- `vue-asset-generate -a logo.svg -o img`
+- `vue-asset-generate -a logo.svg -o img -b 182C61`
+- `vue-asset-generate -a logo.svg -o img -b "#9AECDB"`
 
 ## "Hey, I'm using the Vue plugin for pwa. Where do I put my manifest json?"
 
