@@ -2,6 +2,27 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
 
+const colorRegex = /^#([0-9a-f]{3}){1,2}$/i;
+
+/**
+ * parse a string to a correct color if it is possible
+ * @param {string} input color
+ * @returns a correct color if the input is valid
+ */
+const getColorFromString = (input) => {
+  if (!input) {
+    return null;
+  }
+
+  if (input[0] !== "#") {
+    input = `#${input}`;
+  }
+
+  const isColor = colorRegex.test(input);
+
+  return isColor ? input : null;
+};
+
 /**
  * Log a information.
  * @param {string} filename file name
@@ -53,6 +74,7 @@ const createOutputFolder = (outputFolder) => {
 };
 
 module.exports = {
+  getColorFromString,
   logInfo,
   logSuccess,
   logError,

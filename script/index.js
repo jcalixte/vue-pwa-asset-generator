@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const {
   createOutputFolder,
+  getColorFromString,
   logInfo,
   logSuccess,
   logFatal,
@@ -12,6 +13,8 @@ const {
 const { resize } = require("./modules/png");
 const { generateFavicon } = require("./modules/favicon");
 const { generateSvg } = require("./modules/svg");
+
+const DEFAULT_BACKGROUND = "#ffffffff";
 
 const main = () => {
   const options = yargs
@@ -22,18 +25,33 @@ const main = () => {
       type: "string",
       demandOption: true,
     })
-    .option("o", { alias: "output", describe: "folder output", type: "string", default: false })
+    .option("o", {
+      alias: "output",
+      describe: "folder output",
+      type: "string",
+      default: false,
+    })
+    .option("b", {
+      alias: "background",
+      describe: "fallback background for unsupported transparent icons",
+      type: "string",
+      default: false,
+    })
     .option("manifest", {
       describe: "generate manifest.json file",
       type: "boolean",
       default: true,
     }).argv;
 
+  const background = getColorFromString(options.background) || null;
   const withManifest = options.manifest;
-  
-  const publicFolderPath = createOutputFolder(path.normalize(options.output || "public" || ""));
-  const iconFolderPath = createOutputFolder(path.normalize(options.output || "public/img/icons" || ""));
 
+  const publicFolderPath = createOutputFolder(
+    path.normalize(options.output || "public" || "")
+  );
+  const iconFolderPath = createOutputFolder(
+    path.normalize(options.output || "public/img/icons" || "")
+  );
 
   if (!fs.existsSync(options.asset)) {
     logFatal(
@@ -68,10 +86,12 @@ const main = () => {
 
   const generateIcons = async () => {
     const icons = await Promise.all(
-      iconParams.map((iconParam) => resize(assetPath, iconFolderPath, ...iconParam))
+      iconParams.map((iconParam) =>
+        resize(assetPath, iconFolderPath, ...iconParam)
+      )
     );
     const asset512x512Path = `${iconFolderPath}/android-chrome-512x512.png`;
-    await generateFavicon(asset512x512Path, publicFolderPath);
+    await generateFavicon(asset512x512Path, publicFolderPath, background);
 
     const json = JSON.stringify({ icons }, null, 2);
     const manifestFilename = "manifest.json";
