@@ -44,11 +44,11 @@ VueJS PWA asset generator has a `vue-asset-generate` command with two parameters
 
 ## Examples
 
-- `vue-asset-generate -a logo.png -o img`
-- `vue-asset-generate -a logo.svg`
-- `vue-asset-generate -a logo.svg -o img`
-- `vue-asset-generate -a logo.svg -o img -b 182C61`
-- `vue-asset-generate -a logo.svg -o img -b "#9AECDB"`
+- `vue-pwa-asset-generator -a logo.png -o img`
+- `vue-pwa-asset-generator -a logo.svg`
+- `vue-pwa-asset-generator -a logo.svg -o img`
+- `vue-pwa-asset-generator -a logo.svg -o img -b 182C61`
+- `vue-pwa-asset-generator -a logo.svg -o img -b "#9AECDB"`
 
 ## "Hey, I'm using the Vue plugin for pwa. Where do I put my manifest json?"
 
