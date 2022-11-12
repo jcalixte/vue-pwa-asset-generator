@@ -27,11 +27,23 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "potrace": "^2.1.8",
-    "sharp": "^0.30.3",
+    "sharp": "^0.31.2",
     "to-ico": "^1.1.5",
-    "yargs": "^17.4.0"
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "release-it": "^14.14.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "minimist@<1.2.6": ">=1.2.6",
+      "minimist@<0.2.1": ">=0.2.1",
+      "jpeg-js@<0.4.4": ">=0.4.4",
+      "got@<11.8.5": ">=11.8.5",
+      "parse-url@<6.0.1": ">=6.0.1",
+      "parse-path@<5.0.0": ">=5.0.0",
+      "jpeg-js@<0.4.0": ">=0.4.0",
+      "parse-url@<8.1.0": ">=8.1.0"
+    }
   }
 }
