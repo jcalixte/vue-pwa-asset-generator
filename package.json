@@ -32,7 +32,7 @@
     "yargs": "^17.6.2"
   },
   "devDependencies": {
-    "release-it": "^14.14.0"
+    "release-it": "^15.5.0"
   },
   "pnpm": {
     "overrides": {
