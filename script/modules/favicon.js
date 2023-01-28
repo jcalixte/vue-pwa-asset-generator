@@ -30,10 +30,13 @@ const generateFavicon = async (assetPath, pathOutput, background) => {
       resize: true,
     });
     fs.writeFileSync(`${pathOutput}/${filename}`, result);
-    fs.unlinkSync(inputPath);
     logSuccess(filename);
   } catch (err) {
     logError(filename, err);
+  } finally {
+    if (inputPath !== assetPath) {
+      fs.unlinkSync(inputPath);
+    }
   }
 };
 
