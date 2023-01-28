@@ -7,7 +7,9 @@
     "vue-asset-generate": "./script/index.js"
   },
   "scripts": {
-    "release": "release-it"
+    "release": "release-it",
+    "test:png": "./script/index.js -a ./docs/rainbow.png -o ./output",
+    "test:svg": "reset && ./script/index.js -a ./docs/rainbow.svg -o ./output"
   },
   "repository": {
     "type": "git",
