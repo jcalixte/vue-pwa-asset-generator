@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/vue-pwa-asset-generator?style=for-the-badge)
 ![npm](https://img.shields.io/npm/dm/vue-pwa-asset-generator?style=for-the-badge)
 
-_TLDR_ :
+_TLDR_:
 
 ```sh
 npx vue-pwa-asset-generator -a {512x512_png_source | svg_source} [-o {output_folder} [-b {fallback background color}]]
