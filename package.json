@@ -29,7 +29,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "potrace": "^2.1.8",
-    "sharp": "^0.31.2",
+    "sharp": "^0.32.6",
     "to-ico": "^1.1.5",
     "yargs": "^17.6.2"
   },
